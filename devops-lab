@@ -1,0 +1,25 @@
+devops-labs/
+│
+├── week1/
+│   ├── linux_basics/
+│   │   ├── linux_basics.md                # Document commands and outputs
+│   │   └── screenshots/                   # Screenshots of terminal results
+│   │
+│   ├── bash_scripts/
+│   │   ├── disk_alert.sh
+│   │   ├── backup_daily.sh
+│   │   ├── system_info.sh
+│   │   ├── README.md                      # Explain what each script does
+│   │
+│   ├── web_server/
+│   │   ├── index.html                     # Your “Hello from DevOps” webpage
+│   │   ├── nginx_restart.sh               # Script to restart Nginx if down
+│   │   ├── backup_nginx_conf.sh
+│   │   └── screenshots/
+│   │
+│   └── git_practice/
+│       ├── commands.md                    # Git commands you practised
+│       ├── branch_screenshot.png
+│       └── tag_screenshot.png
+│
+└── README.md                              # Main project overview

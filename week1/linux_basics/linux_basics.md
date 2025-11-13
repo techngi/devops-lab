@@ -1,3 +1,4 @@
+````bash
 ip a
 ip route
 ping google.com

@@ -1,9 +1,3 @@
-
----
-
-### ✔️ Ready to use  
-Just **paste this in your `.md` file**, and **rename image numbers** to match your screenshots.
-
 ---
 
 ### Want even cleaner formatting?  

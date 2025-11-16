@@ -7,3 +7,5 @@
 #### Command
 ```bash
 ip route
+---
+![ifconfig screenshot](../screenshots/1.png)

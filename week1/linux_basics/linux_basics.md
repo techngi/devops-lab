@@ -1,8 +1,3 @@
-### Check IP Address
-````bash
-ip a
----
-![ifconfig screenshot](../screenshots/1.png)
 ip route
 ping google.com
 nslookup google.com

@@ -46,3 +46,24 @@ sudo ufw status
 ![ifconfig screenshot](../screenshots/7.png)
 
 ![ifconfig screenshot](../screenshots/8.png)
+
+
+ls -l /var/log | awk '{print $9}' > out.txt
+for file in $(cat out.txt); do echo "File name is $file"; done
+
+
+ ls -l /etc/ | awk '{print $9}' > files.txt
+ for file in $(cat files.txt); do if [ "$file" = "resolv.conf" ]; then cat "/etc/$file"; else :; fi; done
+
+ip -4 addr show | grep inet | awk '{print $2}'
+
+find . -type d -exec chmod 770 {} \;
+
+echo "10%" | sed 's/%//'
+
+ip -4 addr show | grep inet | awk '{print $2}' | cut -d/ -f1
+
+ arr=(a b c d e)
+for i in "${arr[@]}"; do echo "$i"; done
+
+i=0; while [ $i -lt 5 ]; do echo $i; i=$[$i+1]; done

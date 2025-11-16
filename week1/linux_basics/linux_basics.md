@@ -2,7 +2,7 @@
 
 ---
 
-### 1️⃣ View IP
+### 1️⃣ View IP Address
 
 ```bash
 ip a
@@ -27,3 +27,4 @@ nslookup google.com
 dig google.com
 ```
 ![ifconfig screenshot](../screenshots/4.png)
+![ifconfig screenshot](../screenshots/5.png)

@@ -1,4 +1,4 @@
-````bash
+bash
 ip a
 ![ifconfig screenshot](../screenshots/1.png)
 ip route

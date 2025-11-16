@@ -46,5 +46,3 @@ sudo ufw status
 ![ifconfig screenshot](../screenshots/7.png)
 
 ![ifconfig screenshot](../screenshots/8.png)
-
-![ifconfig screenshot](../screenshots/9.png)

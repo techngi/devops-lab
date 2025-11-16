@@ -1,6 +1,6 @@
 ````bash
 ip a
-![ifconfig screenshot](../week1/screenshots/1.png)
+![ifconfig screenshot](../screenshots/1.png)
 ip route
 ping google.com
 nslookup google.com

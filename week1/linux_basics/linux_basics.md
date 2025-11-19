@@ -48,14 +48,16 @@ sudo ufw status
 ![ifconfig screenshot](../screenshots/8.png)
 
 
+### Print values from a particualr column
+```bash
 ls -l /var/log | awk '{print $9}' > out.txt
-for file in $(cat out.txt); do echo "File name is $file"; done
-
-
- ls -l /etc/ | awk '{print $9}' > files.txt
- for file in $(cat files.txt); do if [ "$file" = "resolv.conf" ]; then cat "/etc/$file"; else :; fi; done
-
 ip -4 addr show | grep inet | awk '{print $2}'
+```
+
+### List files on a path using for-loop
+```bash
+for file in /var/log/*; do echo "$file"; done
+```
 
 find . -type d -exec chmod 770 {} \;
 

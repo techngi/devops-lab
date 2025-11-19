@@ -62,13 +62,40 @@ ip -4 addr show | grep inet | awk '{print $2}'
 for file in /var/log/*; do echo "$file"; done
 ```
 
+### If-else example
+```bash
+age=18; if [ $age -lt 18 ]; then echo "Less"; elif [ $age -eq 18 ]; then echo "Equal"; else echo "More"; fi
+```
+
+### For Loop
+```bash
+for file in /var/log/*; do echo $file; done
+```
+
+### Read file
+```bash
+while IFS= read -r file; do echo "$file"; done < files.txt
+```
+
+### Exec command
+```bash
 find . -type d -exec chmod 770 {} \;
+```
 
+### Character substitution
+```bash
 echo "10%" | sed 's/%//'
+```
 
+### Show the IPV4 address only
 ip -4 addr show | grep inet | awk '{print $2}' | cut -d/ -f1
 
- arr=(a b c d e)
-for i in "${arr[@]}"; do echo "$i"; done
+### Working with arrays
+```bash
+arr=(a b c d e); for i in "${arr[@]}"; do echo "$i"; done
+```
 
+### While-loop
+```bash
 i=0; while [ $i -lt 5 ]; do echo $i; i=$[$i+1]; done
+```

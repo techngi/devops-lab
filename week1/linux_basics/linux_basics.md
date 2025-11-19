@@ -54,6 +54,7 @@ ls -l /var/log | awk '{print $9}' > out.txt
 ip -4 addr show | grep inet | awk '{print $2}'
 ```
 ![ifconfig screenshot](../screenshots/9.png)
+
 ![ifconfig screenshot](../screenshots/10.png)
 
 ### List files on a path using for-loop

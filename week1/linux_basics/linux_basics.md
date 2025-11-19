@@ -57,17 +57,12 @@ ip -4 addr show | grep inet | awk '{print $2}'
 
 ![ifconfig screenshot](../screenshots/10.png)
 
-### List files on a path using for-loop
-```bash
-for file in /var/log/*; do echo "$file"; done
-```
-
 ### If-else example
 ```bash
 age=18; if [ $age -lt 18 ]; then echo "Less"; elif [ $age -eq 18 ]; then echo "Equal"; else echo "More"; fi
 ```
 
-### For Loop
+### List files on a path using for-loop
 ```bash
 for file in /var/log/*; do echo $file; done
 ```

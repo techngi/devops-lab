@@ -13,8 +13,6 @@ Remove symlink to default and create newone with your custom URL
 ls -l /etc/nginx/sites-enabled/
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/devops-lab /etc/nginx/sites-enabled/default
-sudo nginx -t
-sudo systemctl reload nginx
 ```
 ![symlink screenshot](../screenshots/18.png)
 
@@ -24,5 +22,11 @@ sudo systemctl reload nginx
 ![config screenshot](../screenshots/20.png)
 
 ![root screenshot](../screenshots/21.png)
+
+### Verify that the syntax is corret and reload nginx
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
 
 

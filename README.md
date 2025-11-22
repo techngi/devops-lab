@@ -1,6 +1,6 @@
 # DevOps Labs – Week 1: Linux, Bash & Git Foundations
 
-This repository documents my Week 1 practical work as part of my **DevOps Transition Roadmap (Nov 2025 → Feb 2026)**.  
+This repository documents my Week 1 practical work as part of my **DevOps Transition Roadmap**.  
 The focus is on building strong Linux, Bash, and Git fundamentals — forming the backbone of all DevOps work.
 
 ---

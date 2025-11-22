@@ -28,5 +28,5 @@ sudo ln -s /etc/nginx/sites-available/devops-lab /etc/nginx/sites-enabled/defaul
 sudo nginx -t
 sudo systemctl reload nginx
 ```
-
+![update screenshot](../screenshots/22.png)
 

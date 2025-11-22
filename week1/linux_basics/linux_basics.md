@@ -1,6 +1,8 @@
 ### Some useful commands
 To shorten your bash prompt, edit .bashrc
+
 ![default screenshot](../screenshots/23.png)
+
 ```bash
 nano ~/.bashrc
 ```

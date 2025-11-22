@@ -1,5 +1,6 @@
 ### Some useful commands
 To shorten your bash prompt, edit .bashrc
+![default screenshot](../screenshots/23.png)
 ```bash
 nano ~/.bashrc
 ```
@@ -9,7 +10,9 @@ PROMPT_DIRTRIM=2
 export PS1="\u@\h:\W$ "
 source ~/.bashrc
 ```
+![bashrc screenshot](../screenshots/24.png)
 
+![reload screenshot](../screenshots/25.png)
 
 ## Linux Network Commands with Outputs
 

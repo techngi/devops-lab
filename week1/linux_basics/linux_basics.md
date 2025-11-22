@@ -1,6 +1,6 @@
 ### Some useful commands
 Command to shorten the path
-'''bash
+```bash
 PROMPT_DIRTRIM=2
 export PS1="\u@\h:\W$ "
 source ~/.bashrc

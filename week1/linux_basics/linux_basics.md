@@ -6,13 +6,18 @@ To shorten your bash prompt, edit .bashrc
 ```bash
 nano ~/.bashrc
 ```
-Add the following lines at the bottom, save and reload
+Add the following lines at the bottom
 ```
 PROMPT_DIRTRIM=2
 export PS1="\u@\h:\W$ "
-source ~/.bashrc
+
 ```
 ![bashrc screenshot](../screenshots/24.png)
+```
+Save and reload
+```
+source ~/.bashrc
+```
 
 ![reload screenshot](../screenshots/25.png)
 

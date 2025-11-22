@@ -1,3 +1,11 @@
+### Some useful commands
+Command to shorten the path
+'''bash
+PROMPT_DIRTRIM=2
+export PS1="\u@\h:\W$ "
+source ~/.bashrc
+```
+
 ## Linux Network Commands with Outputs
 
 ---

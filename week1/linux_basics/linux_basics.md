@@ -20,6 +20,7 @@ Save and reload
 source ~/.bashrc
 ```
 ![reload screenshot](../screenshots/25.png)
+---
 
 ## Linux Network Commands with Outputs
 

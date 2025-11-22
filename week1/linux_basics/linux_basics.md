@@ -1,10 +1,15 @@
 ### Some useful commands
-Command to shorten the path
+To shorten your bash prompt, edit .bashrc
 ```bash
+nano ~/.bashrc
+```
+Add the following lines at the bottom, save and reload
+```
 PROMPT_DIRTRIM=2
 export PS1="\u@\h:\W$ "
 source ~/.bashrc
 ```
+
 
 ## Linux Network Commands with Outputs
 

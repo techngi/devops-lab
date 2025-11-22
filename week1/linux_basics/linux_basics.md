@@ -13,8 +13,9 @@ export PS1="\u@\h:\W$ "
 
 ```
 ![bashrc screenshot](../screenshots/24.png)
-```
+
 Save and reload
+
 ```
 source ~/.bashrc
 ```

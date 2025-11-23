@@ -3,7 +3,7 @@
 ### Create an IAM user:
 
 Name: terraform-user
-
+![user] (screenshot/1.png]
 Permissions:
 
 * AmazonEC2FullAccess

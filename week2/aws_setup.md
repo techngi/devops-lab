@@ -15,15 +15,22 @@ Permissions:
 * IAMReadOnlyAccess
 
 * CloudWatchReadOnlyAccess
+  
+![user](screenshot/2.png)
 
 - Enable “Access Key”.
+
+![user](screenshot/3.png)
 
 Configure AWS CLI:
 ```bash
 aws configure
 ```
+![user](screenshot/4.png)
 
 Test connectivity:
 ```bash
 aws sts get-caller-identity
 ```
+
+![user](screenshot/5.png)

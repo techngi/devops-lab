@@ -4,7 +4,7 @@
 
 Name: terraform-user
 
-![user](../screenshot/1.png]
+![user](../screenshot/1.png)
 
 Permissions:
 

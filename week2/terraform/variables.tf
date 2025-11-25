@@ -37,10 +37,10 @@ variable "ssh_ingress_cidr" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
-variable "key_name" {
-  description = "Existing AWS key pair name"
-  type        = string
-}
+# variable "key_name" {
+#  description = "Existing AWS key pair name"
+#  type        = string
+# }

@@ -36,7 +36,7 @@ sudo apt update
 sudo apt install terraform -y
 ```
 
-Step 1 - Create AWS credentials file manually
+Step 1 - Create AWS credentials file manually OR Create SSH key (preferred)
 
 ```bash
 mkdir -p ~/.aws
@@ -45,6 +45,11 @@ nano ~/.aws/credentials
 [default]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
+```
+# Create SSH key pair on your local machine
+
+```bash
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/ansible-key
 ```
 
 Step 2 - Create AWS config file

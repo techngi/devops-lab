@@ -124,4 +124,10 @@ output "ansible_inventory" {
 ```bash
 terraform output -raw ansible_inventory > ../ansible/inventory.ini
 ```
+![apply](screenshot/7.png)
 
+![output](screenshot/8.png)
+
+![inventory(screenshot/9.png)
+
+![ansible](screenshot/10.png)

@@ -101,3 +101,27 @@ terraform.tfstate.backup
 
 ```
 
+### Integrate Terraform with Ansible
+Generate dynamic inventory file for Ansible using terraform output
+- Create inventory template file inventory.tpl
+```bash
+nano inventory.tpl
+[web]
+${public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-key
+```
+
+- Update inventory template from terraform output
+
+```bash
+output "ansible_inventory" {
+  value = templatefile("${path.module}/inventory.tpl", {
+    public_ip = aws_instance.web.public_ip
+  })
+}
+```
+
+- Generate inventory.ini
+```bash
+terraform output -raw ansible_inventory > ../ansible/inventory.ini
+```
+

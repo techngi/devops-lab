@@ -128,6 +128,6 @@ terraform output -raw ansible_inventory > ../ansible/inventory.ini
 
 ![output](screenshot/8.png)
 
-![inventory(screenshot/9.png)
+![inventory](screenshot/9.png)
 
 ![ansible](screenshot/10.png)

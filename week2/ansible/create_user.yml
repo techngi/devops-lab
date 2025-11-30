@@ -1,0 +1,21 @@
+- name: Create user and copy SSH key
+  hosts: local
+  become: yes
+
+  vars:
+    username: devopsadmin
+    ssh_pub_key: "{{ lookup('file', '~/.ssh/ansible-key.pub') }}"
+
+  tasks:
+    - name: Create user account
+      user:
+        name: "{{ username }}"
+        shell: /bin/bash
+        state: present
+        create_home: yes
+
+    - name: Allow SSH key login
+      authorized_key:
+        user: "{{ username }}"
+        state: present
+        key: "{{ ssh_pub_key }}"

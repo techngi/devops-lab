@@ -106,6 +106,17 @@ data "aws_ami" "ubuntu_2204" {
   }
 }
 
+
+
+########################
+# Create SSH Key
+########################
+resource "aws_key_pair" "ansible_key" {
+  key_name   = "ansible-key"
+  public_key = file("/home/vagrant/.ssh/ansible-key.pub")
+}
+
+
 ########################
 # EC2 Instance
 ########################
@@ -116,7 +127,7 @@ resource "aws_instance" "web" {
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = true
-  key_name                    = var.key_name
+  key_name                    = aws_key_pair.ansible_key.key_name
 
   tags = {
     Name = "${var.project_name}-web-ec2"

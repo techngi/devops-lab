@@ -132,4 +132,5 @@ terraform output -raw ansible_inventory > ../ansible/inventory.ini
 
 ![ansible](screenshot/10.png)
 
+### Architecture diagram
 ![draw](screenshot/11.jpg)

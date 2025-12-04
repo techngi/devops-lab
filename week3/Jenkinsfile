@@ -1,0 +1,52 @@
+// Jenkinsfile for Week 3 – Flask app + Docker
+def dockerImage
+
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME     = "sanaqvi573/week3-app"   // your Docker Hub repo
+        DOCKERHUB_CRED = "dockerhub-creds"        // Jenkins DockerHub credential ID
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // pulls code from Github
+                checkout scm
+            }
+        }
+
+        stage('Build Docker image') {
+            steps {
+                // build from week3 directory, using dockerfile file
+                dir('week3') {
+                    script {
+                        dockerImage = docker.build(
+                            "${IMAGE_NAME}:${env.BUILD_NUMBER}",
+                            "-f dockerfile ."
+                        )
+                    }
+                }
+            }
+        }
+
+        stage('Push image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKERHUB_CRED) {
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+
+        // optional deploy stage (we can fill this later)
+        // stage('Deploy') {
+        //     steps {
+        //         echo "Add SSH / Kubernetes deploy here later"
+        //     }
+        // }
+    }
+}

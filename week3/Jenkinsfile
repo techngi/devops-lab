@@ -41,12 +41,21 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Lab VM') {
+            steps {
+                sshagent(credentials: ['jenkins-ssh-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no vagrant@192.168.56.11 '
+                        docker pull sanaqvi573/week3-app:latest &&
+                        docker stop week3-app || true &&
+                        docker rm week3-app || true &&
+                        docker run -d --name week3-app -p 5000:5000 sanaqvi573/week3-app:latest
+                    '
+                    '''
+                }
+            }
+        }
 
-        // optional deploy stage (we can fill this later)
-        // stage('Deploy') {
-        //     steps {
-        //         echo "Add SSH / Kubernetes deploy here later"
-        //     }
-        // }
+
     }
 }

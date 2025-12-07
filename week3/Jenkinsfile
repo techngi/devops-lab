@@ -91,32 +91,36 @@ pipeline {
         }
 
         // NEW: Remote health check on Lab VM after deploy
-        stage('Health Check (Lab VM)') {
-            steps {
-                sshagent(credentials: ['jenkins-ssh-key']) {
-                    sh '''
-                    echo "Performing remote health check on Lab VM..."
-                    STATUS=$(ssh -o StrictHostKeyChecking=no vagrant@192.168.56.11 \
-                      "sleep 5 && curl -s -o /dev/null -w \\"%{http_code}\\" http://localhost:5000/health || echo 000")
+stage('Health Check (Local)') {
+    steps {
+        script {
+            def containerName = "week3-app-test-${env.BUILD_NUMBER}"
 
-                    echo "Remote /health returned: $STATUS"
+            try {
+                sh """
+                  echo "Starting test container: ${containerName}"
+                  docker run -d --name ${containerName} ${IMAGE_NAME}:${env.BUILD_NUMBER}
 
-                    if [ "$STATUS" != "200" ]; then
-                      echo "Remote health check FAILED"
-                      exit 1
-                    fi
+                  echo "Waiting for app to start..."
+                  sleep 10
 
-                    echo "Remote health check PASSED"
-                    '''
-                }
+                  STATUS=\$(docker exec ${containerName} \
+                    curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/health || echo "000")
+
+                  echo "Health endpoint returned: \$STATUS"
+
+                  if [ "\$STATUS" != "200" ]; then
+                    echo "Local health check FAILED"
+                    echo "---- Container logs ----"
+                    docker logs ${containerName} || true
+                    exit 1
+                  fi
+
+                  echo "Local health check PASSED"
+                """
+            } finally {
+                sh "docker rm -f ${containerName} || true"
             }
-        }
-    }
-
-    post {
-        always {
-            // just in case the local test container is left behind
-            sh 'docker rm -f week3-app-test-* || true || true'
         }
     }
 }

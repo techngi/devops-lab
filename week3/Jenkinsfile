@@ -21,8 +21,8 @@ pipeline {
                 dir('week3') {
                     script {
                         dockerImage = docker.build(
-                            "${IMAGE_NAME}:${env.BUILD_NUMBER}","-f dockerfile .
-                            "
+                            "${IMAGE_NAME}:${env.BUILD_NUMBER}",
+                            "-f dockerfile ."
                         )
                     }
                 }

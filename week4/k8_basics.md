@@ -78,3 +78,31 @@ docker run -d \
   -v jenkins_home:/var/jenkins_home \
   jenkins/jenkins:lts
 ```
+
+
+
+# Common Kubernetes Commands
+
+```bash
+kubectl get nodes
+kubectl get pods -A
+kubectl describe node <node>
+kubectl create namespace devops-week4
+kubectl config view
+```
+
+# Deploy busybox pod and interact with it
+
+```bash
+kubectl run test --image=busybox --namespace=devops-week4 -- sleep 3600
+
+kubectl exec -it busybox -n devops-week4 -- sh
+
+hostname
+ip a
+ls /
+exit
+
+```
+
+

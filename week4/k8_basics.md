@@ -105,4 +105,59 @@ exit
 
 ```
 
+==== Deploy app on Kubernetess Cluster =====
+
+Create directory week4/k8-manifests and create below files in this directory
+Deployment.yaml
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: week3-app
+  namespace: devops-week4
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: week3-app
+  template:
+    metadata:
+      labels:
+        app: week3-app
+    spec:
+      containers:
+      - name: web
+        image: sanaqvi573/week3-app:latest
+        ports:
+        - containerPort: 5000
+```
+
+Service.yaml
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: week3-service
+  namespace: devops-week4
+spec:
+  type: NodePort
+  selector:
+    app: week3-app
+  ports:
+    - port: 80
+      targetPort: 5000
+      nodePort: 30080
+```
+
+# Now deploy manifest and debug
+
+```bash
+kubectl apply -f k8s-manifests/
+
+kubectl logs -l app=week3-app -n devops-week4
+kubectl describe pod <pod>
+```
+
 

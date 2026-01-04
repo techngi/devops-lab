@@ -159,5 +159,5 @@ kubectl apply -f k8s-manifests/
 kubectl logs -l app=week3-app -n devops-week4
 kubectl describe pod <pod>
 ```
-
+![service screenshot](1.png)
 

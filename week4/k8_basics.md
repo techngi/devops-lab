@@ -160,4 +160,13 @@ kubectl logs -l app=week3-app -n devops-week4
 kubectl describe pod <pod>
 ```
 
+# Expose the service
+
+```bash
+kubectl get svc week3-service -n devops-week4
+
+minikube ip
+minikube service week3-service -n devops-week4 --url
+curl http://192.168.49.2:30080
+```
 

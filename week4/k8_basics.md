@@ -159,6 +159,7 @@ kubectl apply -f k8s-manifests/
 kubectl logs -l app=week3-app -n devops-week4
 kubectl describe pod <pod>
 ```
+<<<<<<< HEAD
 
 # Expose the service
 
@@ -169,4 +170,7 @@ minikube ip
 minikube service week3-service -n devops-week4 --url
 curl http://192.168.49.2:30080
 ```
+
+![service screenshot](1.jpg)
+0a74449420576a514138792cd14d97d2c732729c
 

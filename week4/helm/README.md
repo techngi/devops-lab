@@ -8,9 +8,27 @@ helm create week3-app
 ```
 
 Modify:
+
 values.yaml
-templates/deployment.yaml
-templates/service.yaml
+
+templates/deployment.yaml (if required)
+
+templates/service.yaml (if required)
+
+values.yaml
+
+```bash
+image:
+  repository: sanaqvi573/week3-app
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+
+service:
+    type: NodePort
+  port: 5000
+  nodeport: 30081
+```
 
 Install the chart
 

@@ -105,9 +105,10 @@ exit
 
 ```
 
-### Deploy my customized app on Kubernetess Cluster ###
+# Deploy my customized app on Kubernetess Cluster
 
 Create directory week4/k8-manifests and create below files in this directory
+
 Deployment.yaml
 
 ```bash
@@ -151,7 +152,7 @@ spec:
       nodePort: 30080
 ```
 
-# Now deploy manifest and debug
+- Now deploy manifest and debug
 
 ```bash
 kubectl apply -f k8s-manifests/
@@ -159,9 +160,7 @@ kubectl apply -f k8s-manifests/
 kubectl logs -l app=week3-app -n devops-week4
 kubectl describe pod <pod>
 ```
-<<<<<<< HEAD
-
-# Expose the service
+- Expose the service
 
 ```bash
 kubectl get svc week3-service -n devops-week4
@@ -172,5 +171,5 @@ curl http://192.168.49.2:30080
 ```
 
 ![service screenshot](1.jpg)
-0a74449420576a514138792cd14d97d2c732729c
+
 

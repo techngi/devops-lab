@@ -105,7 +105,7 @@ exit
 
 ```
 
-==== Deploy app on Kubernetess Cluster =====
+### Deploy my customized app on Kubernetess Cluster ###
 
 Create directory week4/k8-manifests and create below files in this directory
 Deployment.yaml

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: week3-app-svc
-  namespace: devops-week4
+  namespace: devops-week5
 spec:
   type: NodePort
   selector:

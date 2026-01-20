@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: week3-app
-  namespace: devops-week4
+  namespace: devops-week5
 spec:
   replicas: 2
   selector:

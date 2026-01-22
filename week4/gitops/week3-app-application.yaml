@@ -1,0 +1,24 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: week3-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/techngi/devops-lab.git
+    targetRevision: master
+    path: week4/gitops/week3-app
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: devops-week5
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

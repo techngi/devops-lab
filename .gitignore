@@ -1,3 +1,9 @@
 # Python virtual environments
 venv/
 .venv/
+
+# Python venv
+week3/venv/
+week3/.venv/
+venv/
+.venv/

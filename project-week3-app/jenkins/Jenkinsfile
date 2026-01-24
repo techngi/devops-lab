@@ -2,21 +2,27 @@ pipeline {
   agent any
 
   parameters {
-    string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Docker image tag to deploy (must exist on Docker Hub)')
+    string(name: 'IMAGE_TAG', defaultValue: '', description: 'Docker image tag to deploy (leave blank to use BUILD_NUMBER)')
   }
 
   stages {
-    stage('Update GitOps values.yaml') {
+    stage('Update GitOps values.yaml (dev)') {
       steps {
         withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
           sh """
-            set -e
-            BRANCH="master"
-            VALUES_FILE="week4/gitops/week3-app/values.yaml"
+            set -euo pipefail
+
+            BRANCH="dev"
+            VALUES_FILE="project-week3-app/helm/week3-app/values.yaml"
             IMAGE_REPO="sanaqvi573/week3-app"
 
+            # If IMAGE_TAG not provided, use Jenkins build number
+            if [ -z "\${IMAGE_TAG}" ]; then
+              IMAGE_TAG="\${BUILD_NUMBER}"
+            fi
+
             rm -rf gitops
-            git clone -b "\$BRANCH" https://github.com/techngi/devops-lab.git gitops
+            git clone -b "\${BRANCH}" https://github.com/techngi/devops-lab.git gitops
             cd gitops
 
             # Configure auth for push (token)
@@ -26,20 +32,31 @@ pipeline {
             git config user.email "jenkins@local"
             git config user.name "Jenkins CI"
 
-            # Update tag properly -> tag: "17"
-            sed -i "s/^  tag: .*/  tag: \\\"\${IMAGE_TAG}\\\"/" "\$VALUES_FILE"
+            # Safety check
+            if [ ! -f "\${VALUES_FILE}" ]; then
+              echo "ERROR: values.yaml not found at: \${VALUES_FILE}"
+              echo "TIP: confirm chart path in repo."
+              exit 1
+            fi
 
-            echo "Updated image section:"
-            grep -n "image:" -A6 "\$VALUES_FILE"
+            echo "Before update:"
+            grep -nE "^[[:space:]]*tag:" "\${VALUES_FILE}" || true
 
-            git add "\$VALUES_FILE"
+            # Update image tag (robust match)
+            sed -i -E "s|^([[:space:]]*tag:).*|\\1 \\"\${IMAGE_TAG}\\"|g" "\${VALUES_FILE}"
+
+            echo "After update:"
+            grep -nE "^[[:space:]]*tag:" "\${VALUES_FILE}" || true
+
+            git add "\${VALUES_FILE}"
 
             if git diff --cached --quiet; then
               echo "No changes to commit"
-            else
-              git commit -m "ci: deploy \${IMAGE_REPO}:\${IMAGE_TAG}"
-              git push origin "\$BRANCH"
+              exit 0
             fi
+
+            git commit -m "ci(gitops): deploy \${IMAGE_REPO}:\${IMAGE_TAG}"
+            git push origin "\${BRANCH}"
           """
         }
       }

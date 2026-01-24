@@ -8,6 +8,7 @@ pipeline {
   stages {
     stage('Update GitOps values.yaml (dev)') {
       steps {
+        cleanWs()
         withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
           sh """
             set -euo pipefail
@@ -25,6 +26,12 @@ pipeline {
             git clone -b "\${BRANCH}" https://github.com/techngi/devops-lab.git gitops
             cd gitops
 
+            # Avoid 'dubious ownership' issues on Jenkins agents
+            git config --global --add safe.directory "\$(pwd)"
+
+            # Ensure branch exists locally
+            git rev-parse --verify "\${BRANCH}" >/dev/null 2>&1 || { echo "Branch not found: \${BRANCH}"; exit 1; }
+
             # Configure auth for push (token)
             git remote set-url origin "https://\${GITHUB_TOKEN}@github.com/techngi/devops-lab.git"
 
@@ -35,15 +42,14 @@ pipeline {
             # Safety check
             if [ ! -f "\${VALUES_FILE}" ]; then
               echo "ERROR: values.yaml not found at: \${VALUES_FILE}"
-              echo "TIP: confirm chart path in repo."
               exit 1
             fi
 
             echo "Before update:"
             grep -nE "^[[:space:]]*tag:" "\${VALUES_FILE}" || true
 
-            # Update image tag (robust match)
-            sed -i -E "s|^([[:space:]]*tag:).*|\\1 \\"\${IMAGE_TAG}\\"|g" "\${VALUES_FILE}"
+            # Update image tag ONLY within 'image:' block
+            sed -i -E '/^image:/,/^[^[:space:]]/ s|^[[:space:]]*tag:.*|  tag: "'"${IMAGE_TAG}"'"|' "\${VALUES_FILE}"
 
             echo "After update:"
             grep -nE "^[[:space:]]*tag:" "\${VALUES_FILE}" || true

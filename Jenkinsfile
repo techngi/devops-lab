@@ -18,10 +18,14 @@ pipeline {
     stage('Update GitOps values.yaml') {
       steps {
         withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-          sh """
-            rm -rf gitops
-            git clone -b ${BRANCH} https://${GITHUB_TOKEN}@github.com/techngi/devops-lab.git gitops
+         sh '''
+          rm -rf gitops
+          git clone -b master https://'"$GITHUB_TOKEN"'@github.com/techngi/devops-lab.git gitops
+        '''
+          }
             cd gitops
+            git config user.email "jenkins@local"
+            git config user.name "Jenkins CI"
 
             sed -i 's/^  tag: .*/  tag: "'${IMAGE_TAG}'"/' ${VALUES_FILE}
 
@@ -29,7 +33,7 @@ pipeline {
             grep -n "image:" -A6 ${VALUES_FILE}
 
             git add ${VALUES_FILE}
-            git commit -m "ci: deploy sanaqvi573/week3-app:${IMAGE_TAG}" || echo "No changes to commit"
+            git diff --cached --quiet && echo "No changes to commit" || git commit -m "ci: deploy ..."
             git push origin ${BRANCH}
           """
         }

@@ -1,69 +1,90 @@
-# DevOps Labs – Week 1: Linux, Bash & Git Foundations
+# DevOps Lab Portfolio – CI/CD & GitOps (Sydney Track)
 
-This repository documents my Week 1 practical work as part of my **DevOps Transition Roadmap**.  
-The focus is on building strong Linux, Bash, and Git fundamentals — forming the backbone of all DevOps work.
+This repository showcases my hands-on **DevOps & Platform Engineering** journey, transitioning from an **Infrastructure Support Engineer (MSP)** into a **DevOps / Platform Engineer** role.
 
----
-
-## 📅 Week 1 Objectives
-✅ Strengthen Linux administration skills  
-✅ Automate routine tasks using Bash scripting  
-✅ Practise Git branching and version control  
-✅ (Optional) Deploy and manage a simple web server (Apache/Nginx)
+The work demonstrates **real-world DevOps practices** including Infrastructure as Code, CI/CD pipelines, containerisation, Kubernetes, Helm, and GitOps with ArgoCD.
 
 ---
 
-## 🧩 Folder Structure
+## 🚀 Capstone Project (Start Here)
 
-| Folder | Description |
-|--------|--------------|
-| `linux_basics/` | Linux user management, system monitoring, networking exercises |
-| `bash_scripts/` | Automation scripts (disk alert, backup, system info) |
-| `web_server/` | Mini Nginx deployment + automation |
-| `git_practice/` | Version control exercises and documentation |
+### 🔹 Week3 App – End-to-End GitOps CI/CD Pipeline  
+📁 **Folder:** [`project-week3-app/`](./project-week3-app)
 
----
+**What this project demonstrates:**
+- CI with **Jenkins** (automated pipeline)
+- Containerisation with **Docker**
+- Image versioning & push to Docker Hub
+- GitOps-based CD using **Helm + ArgoCD**
+- Kubernetes deployment with auto-sync, self-heal, and prune
+- Dev branch–based workflow (production-style)
 
-## 🖥️ Highlights
+**CI/CD Flow:**
+Git (dev branch)
+→ Jenkins (build & tag image)
+→ Docker Hub
+→ GitOps commit (Helm values.yaml)
+→ ArgoCD auto-sync
+→ Kubernetes deployment
 
-### 🔧 Linux Basics
-- Created and managed users (`devuser`, `opsuser`, `readonly`)
-- Set up permissions and groups
-- Monitored CPU, memory, and disk usage
-- Configured firewall (UFW) to allow SSH/HTTP only
 
-### ⚙️ Bash Automation
-| Script | Function |
-|--------|-----------|
-| `disk_alert.sh` | Monitors disk usage and logs alerts when >80% |
-| `backup_daily.sh` | Compresses `/etc` directory daily and saves to `/backup` |
-| `system_info.sh` | Prints hostname, uptime, CPU, RAM, and IP info |
 
-### 🌐 Web Server Setup
-- Installed and configured Nginx
-- Custom HTML page served from local VM
-- Automated Nginx restart if stopped
-- Backup script for `/etc/nginx/`
-
-### 🧠 Git Practice
-- Created branches, merged via pull requests, and tagged version `v1.0`
-- Practised reverting commits and viewing history
+This project reflects how modern DevOps teams deploy applications **without direct kubectl access**, using Git as the single source of truth.
 
 ---
 
-## 📸 Screenshots
+## 🧰 Tech Stack
 
-Screenshots of successful outputs and terminal logs are inside each respective folder (e.g., `linux_basics/screenshots/`).
+- Linux (Ubuntu)
+- Bash scripting
+- Git & GitHub (branching, PRs)
+- Jenkins (CI pipelines)
+- Docker & Docker Hub
+- Kubernetes
+- Helm
+- ArgoCD (GitOps)
+- Terraform
+- Ansible
+- Prometheus & Grafana (monitoring basics)
 
 ---
 
-## 🧭 Next Steps (Week 2 Preview)
-- Integrate Terraform + Ansible to deploy and configure the same environment automatically.
-- Begin building the foundation for an end-to-end CI/CD pipeline.
+## 📚 Learning Modules (Weekly Labs)
+
+| Week | Focus | Folder |
+|-----|------|--------|
+| Week 1 | Linux, Bash, Git, Web Server | [`week1/`](./week1) |
+| Week 2 | Terraform & Ansible (IaC) | [`week2/`](./week2) |
+| Week 3 | Jenkins & Docker (CI) | [`week3/`](./week3) |
+| Week 4 | Kubernetes, Helm & ArgoCD (GitOps) | [`week4/`](./week4) |
+
+Each folder contains:
+- Hands-on exercises
+- Configuration files
+- Markdown documentation
+- Screenshots of successful runs
 
 ---
 
-**Author:** Syed Abbas 
-**Date:** November 2025  
-**LinkedIn:** www.linkedin.com/in/syed-abbas-4891a5175 
-**GitHub:** https://github.com/techngi
+## 📸 Documentation & Diagrams
+Additional notes, screenshots, and references are available under:
+
+docs/
+
+---
+
+## 🎯 Career Objective
+Seeking a **Junior DevOps / Platform Engineer / Cloud Automation Engineer** role in **Sydney, NSW**, with a focus on:
+- CI/CD automation
+- Cloud-native infrastructure
+- Kubernetes & GitOps workflows
+- Infrastructure as Code
+
+---
+
+## 👤 Author
+**Syed Abbas**  
+🔗 LinkedIn: https://www.linkedin.com/in/syed-abbas-4891a5175  
+💻 GitHub: https://github.com/techngi  
+📅 Last Updated: November 2025
+

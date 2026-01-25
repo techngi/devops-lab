@@ -1,0 +1,71 @@
+pipeline {
+  agent any
+
+  parameters {
+    string(name: 'IMAGE_TAG', defaultValue: '', description: 'Docker image tag to deploy (leave blank to use BUILD_NUMBER)')
+  }
+
+  stages {
+    stage('Update GitOps values.yaml (dev)') {
+      steps {
+        cleanWs()
+        withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+          sh """
+            set -euo pipefail
+
+            BRANCH="dev"
+            VALUES_FILE="project-week3-app/helm/week3-app/values.yaml"
+            IMAGE_REPO="sanaqvi573/week3-app"
+
+            # If IMAGE_TAG not provided, use Jenkins build number
+            if [ -z "\${IMAGE_TAG}" ]; then
+              IMAGE_TAG="\${BUILD_NUMBER}"
+            fi
+
+            rm -rf gitops
+            git clone -b "\${BRANCH}" https://github.com/techngi/devops-lab.git gitops
+            cd gitops
+
+            # Avoid 'dubious ownership' issues on Jenkins agents
+            git config --global --add safe.directory "\$(pwd)"
+
+            # Ensure branch exists locally
+            git rev-parse --verify "\${BRANCH}" >/dev/null 2>&1 || { echo "Branch not found: \${BRANCH}"; exit 1; }
+
+            # Configure auth for push (token)
+            git remote set-url origin "https://\${GITHUB_TOKEN}@github.com/techngi/devops-lab.git"
+
+            # Configure commit identity
+            git config user.email "jenkins@local"
+            git config user.name "Jenkins CI"
+
+            # Safety check
+            if [ ! -f "\${VALUES_FILE}" ]; then
+              echo "ERROR: values.yaml not found at: \${VALUES_FILE}"
+              exit 1
+            fi
+
+            echo "Before update:"
+            grep -nE "^[[:space:]]*tag:" "\${VALUES_FILE}" || true
+
+            # Update image tag ONLY within 'image:' block
+            sed -i -E '/^image:/,/^[^[:space:]]/ s|^[[:space:]]*tag:.*|  tag: "'"${IMAGE_TAG}"'"|' "\${VALUES_FILE}"
+
+            echo "After update:"
+            grep -nE "^[[:space:]]*tag:" "\${VALUES_FILE}" || true
+
+            git add "\${VALUES_FILE}"
+
+            if git diff --cached --quiet; then
+              echo "No changes to commit"
+              exit 0
+            fi
+
+            git commit -m "ci(gitops): deploy \${IMAGE_REPO}:\${IMAGE_TAG}"
+            git push origin "\${BRANCH}"
+          """
+        }
+      }
+    }
+  }
+}

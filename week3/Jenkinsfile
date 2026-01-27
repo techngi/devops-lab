@@ -1,120 +1,64 @@
-// Jenkinsfile for Week 3 – Flask app + Docker
-def dockerImage
-
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        IMAGE_NAME     = "sanaqvi573/week3-app"   // your Docker Hub repo
-        DOCKERHUB_CRED = "dockerhub-creds"        // Jenkins DockerHub credential ID
+  environment {
+    AWS_REGION   = "ap-southeast-2"
+    AWS_ACCOUNT  = "421869852482"
+    ECR_REPO     = "week3-app"
+    ECR_REGISTRY = "${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    IMAGE_TAG    = "${BUILD_NUMBER}"
+
+    GITOPS_DIR   = "week3-gitops"
+    VALUES_FILE  = "envs/dev/values.yaml"
+  }
+
+  stages {
+    stage("Checkout") {
+      steps { checkout scm }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
+    stage("Build image") {
+      steps {
+        dir("week3") {
+          sh """
+            docker build -t ${ECR_REPO}:${IMAGE_TAG} -f dockerfile .
+            docker tag ${ECR_REPO}:${IMAGE_TAG} ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}
+          """
         }
-
-        stage('Build Docker image') {
-            steps {
-                dir('week3') {
-                    script {
-                        dockerImage = docker.build(
-                            "${IMAGE_NAME}:${env.BUILD_NUMBER}",
-                            "-f dockerfile ."
-                        )
-                    }
-                }
-            }
-        }
-
-        stage('Health Check (Local)') {
-            steps {
-                script {
-                    def containerName = "week3-app-test-${env.BUILD_NUMBER}"
-
-                    try {
-                        sh """
-                          echo "Starting test container: ${containerName}"
-                          docker run -d --name ${containerName} ${IMAGE_NAME}:${env.BUILD_NUMBER}
-
-                          echo "Waiting for app to start..."
-                          sleep 10
-
-                          STATUS=\$(docker exec ${containerName} \
-                            curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/health || echo "000")
-
-                          echo "Health endpoint returned: \$STATUS"
-
-                          if [ "\$STATUS" != "200" ]; then
-                            echo "Local health check FAILED"
-                            echo "---- Container logs ----"
-                            docker logs ${containerName} || true
-                            exit 1
-                          fi
-
-                          echo "Local health check PASSED"
-                        """
-                    } finally {
-                        sh "docker rm -f ${containerName} || true"
-                    }
-                }
-            }
-        }
-
-        stage('Push image to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('', DOCKERHUB_CRED) {
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push("latest")
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to Lab VM') {
-            steps {
-                sshagent(credentials: ['jenkins-ssh-key']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no vagrant@192.168.56.11 '
-                        docker pull sanaqvi573/week3-app:latest &&
-                        docker stop week3-app || true &&
-                        docker rm week3-app || true &&
-                        docker run -d --name week3-app -p 5000:5000 sanaqvi573/week3-app:latest
-                    '
-                    '''
-                }
-            }
-        }
-
-        stage('Health Check (Lab VM)') {
-            steps {
-                sshagent(credentials: ['jenkins-ssh-key']) {
-                    sh '''
-                    echo "Performing remote health check on Lab VM..."
-                    STATUS=$(ssh -o StrictHostKeyChecking=no vagrant@192.168.56.11 \
-                      "sleep 5 && curl -s -o /dev/null -w \\"%{http_code}\\" http://localhost:5000/health || echo 000")
-
-                    echo "Remote /health returned: $STATUS"
-
-                    if [ "$STATUS" != "200" ]; then
-                      echo "Remote health check FAILED"
-                      exit 1
-                    fi
-
-                    echo "Remote health check PASSED"
-                    '''
-                }
-            }
-        }
+      }
     }
 
-    post {
-        always {
-            // Safety cleanup if any test container is left
-            sh 'docker rm -f week3-app-test-* || true'
+    stage("Push to ECR") {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'aws-creds', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+          sh """
+            aws sts get-caller-identity
+            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+            docker push ${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}
+          """
         }
+      }
     }
+
+    stage("Update GitOps repo") {
+      steps {
+        withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
+          sh """
+            rm -rf ${GITOPS_DIR}
+            git clone https://${GITHUB_TOKEN}@github.com/techngi/week3-gitops.git ${GITOPS_DIR}
+            cd ${GITOPS_DIR}
+
+            # preserve indentation, replace tag value
+            sed -i -E 's|(tag:\\s*).*|\\1"${IMAGE_TAG}"|' ${VALUES_FILE}
+
+            git config user.name "jenkins"
+            git config user.email "jenkins@local"
+            git add ${VALUES_FILE}
+            git commit -m "Deploy ${ECR_REPO}:${IMAGE_TAG} to dev" || echo "No changes to commit"
+            git push
+          """
+        }
+      }
+    }
+  }
 }
